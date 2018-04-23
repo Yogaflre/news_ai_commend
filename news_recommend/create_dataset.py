@@ -6,7 +6,7 @@ import math
 class CreateDataset(object):
     # 生成两个数据集：训练集和测试集合
     def generate_dataset(self, line, trainset, testset, pivot=0.5):
-        user, new, rating = line.split('::')
+        user, new = line.split('::')
         # if (random.random() < pivot):
         if (True):
             trainset.setdefault(user, set())
