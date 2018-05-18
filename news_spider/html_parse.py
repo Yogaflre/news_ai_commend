@@ -1,6 +1,4 @@
 from bs4 import BeautifulSoup
-from urllib import parse
-import re
 
 
 class HtmlParse:
@@ -19,6 +17,10 @@ class HtmlParse:
     def get_new_data(self, soup):
         new_datas = {}
         a_s = soup.find_all("a", {"class": "title"})
+        num = 0
         for a in a_s:
             new_datas[a['title']] = a['href']
+            num = num + 1
+            if num is 10:
+                break
         return new_datas

@@ -29,7 +29,7 @@ class CreateDataset(object):
                     usersset[user1].setdefault(user2, num)
         return usersset
 
-    # 生成关系矩阵
+    # 生成用户相似度矩阵(余弦相似度)
     def generate_relation(self, usersset, trainset):
         for user1, relation in usersset.items():
             for user2, count in relation.items():

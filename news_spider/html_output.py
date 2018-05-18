@@ -13,7 +13,7 @@ class HtmlOutput:
     def output_html(self):
         num = 1
         workbook = xlwt.Workbook(encoding='utf-8')
-        booksheet = workbook.add_sheet('Sheet 1')
+        booksheet = workbook.add_sheet('Sheet1')
         booksheet.write(0, 0, "编号")
         booksheet.write(0, 1, "标题")
         booksheet.write(0, 2, "地址")
