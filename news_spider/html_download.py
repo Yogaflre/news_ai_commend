@@ -14,6 +14,10 @@ class HtmlDownload:
             return None
         req = request.Request(url=url, headers=header_dict)
         response = request.urlopen(req)
-        if response.getcode() != 200:
-            return None
+        num = 0
+        while response.getcode() != 200:
+            response = request.urlopen(req)
+            num = num + 1
+            if num == 2:
+                return None
         return response.read()

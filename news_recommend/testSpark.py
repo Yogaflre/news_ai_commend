@@ -44,7 +44,7 @@ class testSparkMain(object):
         conf = SparkConf().setMaster("local").setAppName("news_recommend")
         sc = SparkContext(conf=conf)
         # 加载外部数据集
-        text_file = sc.textFile("data/rateing.dat")
+        text_file = sc.textFile("data/ratings.dat")
         origin_rdd = text_file.map(lambda line: line.split("::"))
         print("origin_rdd", origin_rdd.collect())
         # 生成用户/新闻关系表
@@ -82,14 +82,11 @@ class testSparkMain(object):
         user_rdd = sc.parallelize(usersset).map(lambda x: (x, usersset.get(x)))
         print("user_rdd", user_rdd.collect())
 
-        watched_news = self.getValuesByKey(train_rdd, "1")
+        watched_news = self.getValuesByKey(train_rdd, "10")
         print("watched_news", watched_news)
 
-        print(usersset["1"].items())
-        print(self.getValuesByKey(user_rdd, "1"))
-
         # 给用户推荐新闻
-        for sim_users, rate in sorted(list(self.getValuesByKey(user_rdd, "1")), key=itemgetter(1), reverse=True)[
+        for sim_users, rate in sorted(self.getValuesByKey(user_rdd, "10").items(), key=itemgetter(1), reverse=True)[
                                0:self.simusers]:
             for new in self.getValuesByKey(train_rdd, sim_users):
                 if new in watched_news:

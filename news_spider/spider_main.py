@@ -1,7 +1,8 @@
-import html_download, html_output, html_parse, url_manage
+from news_ai_commend.news_spider import html_download, html_output, html_parse, url_manage
 
 
 class SpiderMain(object):
+
     def __init__(self):
         # 将类赋给初始化变量
         self.urls = url_manage.UrlManage()
@@ -17,6 +18,9 @@ class SpiderMain(object):
                 new_url = self.urls.get_new_url()
                 print("爬取到第", count, "个网页")
                 html_contant = self.download.download(new_url)
+                if html_contant is None:
+                    print("该网页爬取失败:", new_url)
+                    continue
                 new_url, new_datas = self.parse.parse(root_url, html_contant, count)
                 count = count + 1
                 # print(new_url, " ", count)
@@ -24,15 +28,17 @@ class SpiderMain(object):
                 #     print(new_data)
                 self.urls.add_new_url(new_url)
                 self.output.collection_data(new_datas)
+                for new_data in new_datas.items():
+                    yield new_data
                 if count == page_num + 1:
                     break
             except:
                 print("该url爬取失败")
-        self.output.output_html()
+        self.output.output_excel()
 
 
 if __name__ == "__main__":
     root_url = "http://www.jyb.cn/sy/zhxw/"
-    page_num = 15
+    page_num = 16
     obj_spider = SpiderMain()
     obj_spider.craw(root_url, page_num)
